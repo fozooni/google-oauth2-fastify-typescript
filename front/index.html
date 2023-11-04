@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Fastify + Typescript - Google OAuth2 Authentication</title>
+</head>
+<body>
+<a href="http://localhost:8000/oauth2/google">
+    Google Login
+</a>
+<script>
+    // This function checks the current url and takes the query parameters
+    function getUrlVars() {
+        var url = window.location.href;
+        var vars = {};
+        var hashes = url.split("?")[1];
+        var hash = hashes.split('&');
+
+        for (var i = 0; i < hash.length; i++) {
+            params=hash[i].split("=");
+            vars[params[0]] = params[1];
+        }
+        return vars;
+    }
+
+    // This function create a new cookie
+    function setCookie(cname, cvalue, exdays) {
+        const d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        let expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+    // This statement will check if access_token query parameter is set or not
+    // If it was set, it creates a new cookie with the new access token value
+    if(getUrlVars()["access_token"]) {
+        setCookie("google_access_token", getUrlVars()["access_token"], 1);
+        console.log("Logged in successfully!")
+    }
+</script>
+</body>
+</html>
